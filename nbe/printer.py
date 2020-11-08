@@ -1,17 +1,17 @@
-import syntax
+from nbe.syntax import *
 
 
 def print_expression(expression):
-    if isinstance(expression, syntax.Var):
+    if isinstance(expression, Var):
         return expression.identifier
-    if isinstance(expression, syntax.Lambda):
+    if isinstance(expression, Lambda):
         return f"(lambda {expression.identifier} {print_expression(expression.body)})"
-    if isinstance(expression, syntax.Apply):
+    if isinstance(expression, Apply):
         return f"({print_expression(expression.term1)} {print_expression(expression.term2)})"
-    if isinstance(expression, syntax.Pair):
+    if isinstance(expression, Pair):
         return f"(pair {print_expression(expression.term1)} {print_expression(expression.term2)})"
-    if isinstance(expression, syntax.Fst):
+    if isinstance(expression, Fst):
         return f"(fst {print_expression(expression.term)})"
-    if isinstance(expression, syntax.Snd):
+    if isinstance(expression, Snd):
         return f"(snd {print_expression(expression.term)})"
     raise ValueError("Invalid syntax in `print_expression`")

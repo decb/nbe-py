@@ -1,39 +1,79 @@
-import semantics
-import syntax
-import type_syntax
-from name_generator import NameGenerator
+import nbe.semantics as semantics
+import nbe.syntax as syntax
+import nbe.type_syntax as type_syntax
+from nbe.name_generator import NameGenerator
 
-def nbe(ty, term):
+
+def nbe(tau, term):
     generator = NameGenerator()
-    return reify(generator, ty, meaning({}, term))
+    return reify(generator, tau, meaning({}, term))
 
-def reflect(generator, ty, term):
-    if isinstance(ty, type_syntax.Arrow):
-        return semantics.Lambda (lambda s : reflect(generator, ty.target, syntax.Apply(term, reify(generator, ty.source, s))))
-    if isinstance(ty, type_syntax.Product):
-        return semantics.Pair((reflect(generator, ty.first, syntax.Fst(term)), reflect(generator, ty.second, syntax.Snd(term))))
-    if isinstance(ty, type_syntax.Basic):
+
+def reflect(generator, tau, term):
+    if isinstance(tau, type_syntax.Arrow):
+        return semantics.Lambda(
+            lambda s: reflect(
+                generator,
+                tau.target,
+                syntax.Apply(
+                    term,
+                    reify(
+                        generator,
+                        tau.source,
+                        s))))
+    if isinstance(tau, type_syntax.Product):
+        return semantics.Pair(
+            (reflect(
+                generator, tau.first, syntax.Fst(term)), reflect(
+                generator, tau.second, syntax.Snd(term))))
+    if isinstance(tau, type_syntax.Basic):
         return semantics.Syntax(term)
     raise ValueError("Type and term do not match in `reflect`")
 
-def reify(generator, ty, semantic):
-    if isinstance(ty, type_syntax.Arrow) and isinstance(semantic, semantics.Lambda):
-        v = generator.next()
-        return syntax.Lambda(v, reify(generator, ty.target, semantic.function(reflect(generator, ty.source, syntax.Var(v)))))
-    if isinstance(ty, type_syntax.Product) and isinstance(semantic, semantics.Pair):
+
+def reify(generator, tau, semantic):
+    if isinstance(
+            tau,
+            type_syntax.Arrow) and isinstance(
+            semantic,
+            semantics.Lambda):
+        identifier = generator.next()
+        return syntax.Lambda(
+            identifier,
+            reify(
+                generator,
+                tau.target,
+                semantic.function(
+                    reflect(
+                        generator,
+                        tau.source,
+                        syntax.Var(identifier)))))
+    if isinstance(
+            tau,
+            type_syntax.Product) and isinstance(
+            semantic,
+            semantics.Pair):
         first, second = semantic.pair
-        return syntax.Pair(reify(generator, ty.first, first), reify(generator, ty.second, second))
-    if isinstance(ty, type_syntax.Basic) and isinstance(semantic, semantics.Syntax):
+        return syntax.Pair(
+            reify(
+                generator, tau.first, first), reify(
+                generator, tau.second, second))
+    if isinstance(
+            tau,
+            type_syntax.Basic) and isinstance(
+            semantic,
+            semantics.Syntax):
         return semantic.syntax
     raise ValueError("Type and term do not match in `reify`")
+
 
 def meaning(context, term):
     if isinstance(term, syntax.Var):
         return context[term.identifier]
     if isinstance(term, syntax.Lambda):
-        def inner(s):
+        def inner(body):
             new_context = context.copy()
-            new_context[term.identifier] = s
+            new_context[term.identifier] = body
             return meaning(new_context, term.body)
         return semantics.Lambda(inner)
     if isinstance(term, syntax.Apply):
@@ -42,16 +82,19 @@ def meaning(context, term):
             return function_meaning.function(meaning(context, term.term2))
         raise ValueError("Cannot apply non-function in `meaning`")
     if isinstance(term, syntax.Pair):
-        return semantics.Pair(meaning(context, term.term1), meaning(context, term.term2))
+        return semantics.Pair((
+            meaning(
+                context, term.term1), meaning(
+                context, term.term2)))
     if isinstance(term, syntax.Fst):
         pair_meaning = meaning(context, term.term)
         if isinstance(pair_meaning, semantics.Pair):
-            a, _ = pair_meaning.pair
-            return a
+            first, _ = pair_meaning.pair
+            return first
         raise ValueError("Cannot take fst of non-pair in `meaning`")
     if isinstance(term, syntax.Snd):
         pair_meaning = meaning(context, term.term)
         if isinstance(pair_meaning, semantics.Pair):
-            _, b = pair_meaning.pair
-            return b
+            _, second = pair_meaning.pair
+            return second
     raise ValueError("Invalid syntax in `meaning`")
