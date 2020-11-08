@@ -45,5 +45,5 @@ def to_ast(tree):
             return syntax.Lambda(tree[1], to_ast(tree[2]))
         raise SyntaxError("Expected variable name and body for `lambda`")
     if len(tree) == 2:
-        return syntax.Apply(to_ast(tree[1]), to_ast(tree[2]))
+        return syntax.Apply(to_ast(tree[0]), to_ast(tree[1]))
     raise SyntaxError("Cannot parse expression")

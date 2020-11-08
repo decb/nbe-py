@@ -14,4 +14,4 @@ def print_expression(expression):
         return f"(fst {print_expression(expression.term)})"
     if isinstance(expression, syntax.Snd):
         return f"(snd {print_expression(expression.term)})"
-    raise ValueError("Invalid syntax in printer")
+    raise ValueError("Invalid syntax in `print_expression`")
