@@ -1,6 +1,6 @@
 class Basic:
-    def __init__(self, id):
-        self.id = id
+    def __init__(self, identifier):
+        self.identifier = identifier
 
 
 class Arrow:

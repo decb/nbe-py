@@ -1,19 +1,19 @@
 class Var:
-    def __init__(self, id):
-        self._id = id
+    def __init__(self, identifier):
+        self._identifier = identifier
 
     @property
-    def id(self):
-        return self._id
+    def identifier(self):
+        return self._identifier
 
 
 class Lambda:
-    def __init__(self, id, body):
-        self._id, self._body = id, body
+    def __init__(self, identifier, body):
+        self._identifier, self._body = identifier, body
 
     @property
-    def id(self):
-        return self._id
+    def identifier(self):
+        return self._identifier
 
     @property
     def body(self):
