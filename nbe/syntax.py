@@ -9,7 +9,7 @@ class Var:
 
 class Lambda:
     def __init__(self, id, body):
-        this._id, this._body = id, body
+        self._id, self._body = id, body
 
     @property
     def id(self):
@@ -22,7 +22,7 @@ class Lambda:
 
 class Apply:
     def __init__(self, term1, term2):
-        this._term1, this._term2 = term1, term2
+        self._term1, self._term2 = term1, term2
 
     @property
     def term1(self):
@@ -35,7 +35,7 @@ class Apply:
 
 class Pair:
     def __init__(self, term1, term2):
-        this._term1, this._term2 = term1, term2
+        self._term1, self._term2 = term1, term2
 
     @property
     def term1(self):
@@ -48,7 +48,7 @@ class Pair:
 
 class Fst:
     def __init__(self, term):
-        this._term = term
+        self._term = term
 
     @property
     def term(self):
@@ -57,7 +57,7 @@ class Fst:
 
 class Snd:
     def __init__(self, term):
-        this._term = term
+        self._term = term
 
     @property
     def term(self):
