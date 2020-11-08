@@ -26,7 +26,7 @@ def to_tree(tokens):
 
 def to_ast(tree):
     if isinstance(tree, str):
-        return syntax.Var(str)
+        return syntax.Var(tree)
     first = tree[0]
     if first == "fst":
         if len(tree) == 2:
