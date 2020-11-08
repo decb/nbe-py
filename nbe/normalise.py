@@ -97,4 +97,5 @@ def meaning(context, term):
         if isinstance(pair_meaning, semantics.Pair):
             _, second = pair_meaning.pair
             return second
+        raise ValueError("Cannot take snd of non-pair in `meaning`")
     raise ValueError("Invalid syntax in `meaning`")
