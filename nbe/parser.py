@@ -2,11 +2,11 @@ from nbe.syntax import *
 from nbe.type_syntax import *
 
 
-def parse_syntax(string):
+def parse(string):
     return to_syntax(to_tree(tokenise(string)))
 
 
-def parse_type_syntax(string):
+def parse_type(string):
     return to_type_syntax(to_tree(tokenise(string)))
 
 

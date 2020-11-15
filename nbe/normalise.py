@@ -4,7 +4,7 @@ import nbe.type_syntax as type_syntax
 from nbe.name_generator import NameGenerator
 
 
-def nbe(tau, term):
+def normalise(tau, term):
     generator = NameGenerator()
     return reify(generator, tau, meaning({}, term))
 
@@ -69,7 +69,9 @@ def reify(generator, tau, semantic):
 
 def meaning(context, term):
     if isinstance(term, syntax.Var):
-        return context[term.identifier]
+        if term.identifier in context:
+            return context[term.identifier]
+        raise ValueError("Unknown variable in `meaning`")
     if isinstance(term, syntax.Lambda):
         def inner(body):
             new_context = context.copy()
