@@ -29,9 +29,6 @@ def reduce_right(tau, generator, context):
     raise TypeError("Unknown type in `reduce_right`")
 
 
-#    G, A /\ B |- D         G, A -> B |- D
-#   ----------------    ------------------------
-#     G, A, B |- D       G |- D, A    G, B |- D
 def reduce_left(tau, generator, context):
     candidates = [i for i, t in context if t == tau]
     if len(candidates) > 0:
