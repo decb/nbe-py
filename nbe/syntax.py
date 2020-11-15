@@ -62,7 +62,7 @@ class Fst:
     def __init__(self, term):
         self._term = term
 
-    def __self__(self):
+    def __str__(self):
         return f"(fst {str(self.term)})"
 
     @property
@@ -74,7 +74,7 @@ class Snd:
     def __init__(self, term):
         self._term = term
 
-    def __self__(self):
+    def __str__(self):
         return f"(snd {str(self.term)})"
 
     @property
