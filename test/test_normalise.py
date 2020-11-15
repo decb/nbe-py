@@ -1,5 +1,4 @@
 import unittest
-from nbe.generate import generate
 from nbe.parser import parse_syntax, parse_type_syntax
 from nbe.normalise import nbe
 
@@ -29,22 +28,3 @@ class TestNBE(unittest.TestCase):
         self.assertEqual(
             str(normal_form),
             "(pair (lambda a (lambda b a)) (lambda c c))")
-
-
-class TestGeneration(unittest.TestCase):
-    def test_i(self):
-        term = generate(parse_type_syntax("(-> a a)"))
-        self.assertEqual(str(term), "(lambda a a)")
-
-    def test_s(self):
-        term = generate(parse_type_syntax(
-            "(-> (-> a (-> b c)) (-> (-> a b) (-> a c)))"))
-        self.assertEqual(str(term), S)
-
-    def test_swap(self):
-        term = generate(parse_type_syntax("(-> (* a b) (* b a))"))
-        self.assertEqual(str(term), "(lambda a (pair (snd a) (fst a)))")
-
-
-if __name__ == "__main__":
-    unittest.main()

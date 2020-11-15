@@ -13,7 +13,7 @@ An implementation of the simply typed &lambda;-calculus in Python.
 ### Running tests
 
 ```bash
-python test.py
+python -m pytest
 ```
 
 ### References
